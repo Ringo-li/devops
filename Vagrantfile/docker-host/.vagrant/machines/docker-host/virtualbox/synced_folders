@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/labs":{"guestpath":"/home/vagrant/labs","hostpath":"D:/Vagrant/docker-host/labs","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/Vagrant/docker-host","disabled":false,"__vagrantfile":true}}}
