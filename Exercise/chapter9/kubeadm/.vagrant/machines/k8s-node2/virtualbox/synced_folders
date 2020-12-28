@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"D:/share/code/devops/Exercise/chapter9/kubeadm","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}},"virtualbox":{"/home/vagrant/labs":{"guestpath":"/home/vagrant/labs","hostpath":"D:/share/code/devops/Exercise/chapter9/kubeadm/labs","disabled":false,"__vagrantfile":true}}}
