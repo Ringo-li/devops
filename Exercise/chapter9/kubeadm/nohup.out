@@ -33,3 +33,5 @@ node2: SSH address: 127.0.0.1:2201
     k8s-node2: /home/vagrant/labs => D:/share/code/devops/Exercise/chapter9/kubeadm/labs
 ==> k8s-node2: Machine already provisioned. Run `vagrant provision` or use the `--provision`
 ==> k8s-node2: flag to force provisioning. Provisioners marked to run always will still run.
+[1m==> k8s-master: Attempting graceful shutdown of VM...[0m
+[1m==> k8s-node2: Attempting graceful shutdown of VM...[0m
