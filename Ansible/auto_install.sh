@@ -3,21 +3,20 @@ set -euo pipefail
 
 # 1.检查依赖
 set +e
-demoFun(){
-    echo "这是我的第一个 shell 函数!"
+check(){
+    rpm -qa |  grep python-devel > /dev/null
+    if [ $? != 0 ]
+    then
+        echo "please install python-devel"
+        exit 1
+    else
+        echo "start install "
+    fi
 }
-echo "-----函数开始执行-----"
-demoFun
-echo "-----函数执行完毕-----"
-rpm -qa |  grep python-devel > /dev/null
+echo "-----检查依赖-----"
+check
+echo "-----检查依赖完毕-----"
 
-if [ $? != 0 ]
-then
-    echo "please install python-devel"
-    exit 1
-else
-    echo "start install "
-fi
 set -e
 home_path=$(pwd)
 
@@ -104,6 +103,10 @@ cd ${home_path}
 tar xvzf ansible-1.7.2.tar.gz 
 cd ansible-1.7.2
 python setup.py install 
+mkdir -p /etc/ansible/
+cp examples/ansible.cfg /etc/ansible/
+cp examples/hosts /etc/ansible/
+sed -i.bak 's/#log_path/log_path/' /etc/ansible/ansible.cfg
 cd ${home_path}
 
 # 9.删除安装包
