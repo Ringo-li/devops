@@ -1,0 +1,9 @@
+- hosts: webservers
+  remote_user: root
+  tasks:
+  - name: connect test
+    ping:
+
+
+# 执行剧本：
+# ansible-playbook -i hosts ping.yml

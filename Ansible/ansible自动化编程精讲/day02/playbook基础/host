@@ -1,0 +1,10 @@
+[webservers]
+# node2 ansible_ssh_host=192.168.33.152 ansible_ssh_pass=vagrant ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+node2 ansible_ssh_host=192.168.33.152
+[test]
+# node1 ansible_ssh_host=192.168.33.151 ansible_ssh_pass=vagrant ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+node2 ansible_ssh_host=192.168.33.151
+[all:vars]
+ansible_connection=ssh
+ansible_ssh_pass=vagrant
+ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

@@ -1,0 +1,20 @@
+---
+- name: manage web servers
+  hosts: test
+  remote_user: root
+  tasks:
+    - name: yum config
+      shell: rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+    - name: install nginx package
+      yum: name=nginx state=present
+    - name: start nginx server
+      service:
+        name: nginx
+        enabled: true
+        state: started
+...
+
+
+# 执行剧本：
+# ansible-playbook -i hosts nginx.yml
+# 访问：http://192.168.33.151/
