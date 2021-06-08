@@ -1,0 +1,11 @@
+- hosts: webservers
+  remote_user: root
+  # 关闭facts变量收集功能
+  # gather_facts: no
+  tasks:
+  - name: connect test
+    ping:
+
+  - name: debug
+    debug:
+      var: ansible_distribution
