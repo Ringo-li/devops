@@ -1,0 +1,4 @@
+Vagrant使用国内镜像安装插件和box镜像
+https://blog.csdn.net/dafei1288/article/details/105828516
+要安装vagrant-disksize才能使用此vagrantfile
+vagrant plugin install --plugin-clean-sources --plugin-source https://gems.ruby-china.com/ vagrant-disksize
