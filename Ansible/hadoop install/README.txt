@@ -1,1 +1,0 @@
-1.需要创建一个sources文件夹，将yum源和安装包都放到这个目录下，要有一个media的tar包yum源
