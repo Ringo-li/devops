@@ -1,0 +1,16 @@
+---
+- name: test play vars
+  hosts: all
+  vars:
+    user: ringo
+    home: /home/ringo
+  tasks:
+    - name: create the user {{ user }}
+      user:
+        name: "{{ user }}"
+        home: "{{ home }}"
+...
+
+# 测试：ansible-playbook -i localhost, user_add.yml -C
+# 执行： ansible-playbook -i localhost, user_add.yml
+# 删除用户及家目录：userdel -r ringo

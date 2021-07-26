@@ -1,0 +1,4 @@
+- hosts: hbase-master1
+  remote_user: root
+  roles:
+    - base

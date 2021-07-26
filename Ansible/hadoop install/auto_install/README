@@ -1,0 +1,2 @@
+安装方式
+ansible-playbook -i hosts/host master.yml
