@@ -1,0 +1,5 @@
+[ftp]
+name=ftp
+baseurl=ftp://ansible/pub/media/
+gpgcheck=0
+enabled=1

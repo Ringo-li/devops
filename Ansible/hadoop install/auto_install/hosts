@@ -1,0 +1,27 @@
+[bigdata]
+hbase-master1 ansible_ssh_host=192.168.33.21
+hbase-master2 ansible_ssh_host=192.168.33.22
+hbase-slave01 ansible_ssh_host=192.168.33.23
+hbase-slave02 ansible_ssh_host=192.168.33.24
+hbase-slave03 ansible_ssh_host=192.168.33.25
+hbase-slave04 ansible_ssh_host=192.168.33.26
+
+[adaptive]
+zookeeper01 ansible_ssh_host=192.168.33.21
+zookeeper02 ansible_ssh_host=192.168.33.22
+zookeeper03 ansible_ssh_host=192.168.33.23
+kafka01 ansible_ssh_host=192.168.33.21
+kafka02 ansible_ssh_host=192.168.33.22
+kafka03 ansible_ssh_host=192.168.33.23
+
+[share]
+ts-service ansible_ssh_host=192.168.33.24
+tile-server ansible_ssh_host=192.168.33.24
+service-server ansible_ssh_host=192.168.33.25
+oracledb ansible_ssh_host=192.168.33.26
+
+[all:vars]
+ansible_connection=ssh
+ansible_ssh_pass=vagrant
+ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
