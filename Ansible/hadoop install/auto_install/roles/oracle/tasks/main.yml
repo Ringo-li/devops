@@ -106,7 +106,27 @@
     owner: oracle
     group: oinstall
 
-- name: copy oratab
+# - name: copy file
+#   template:
+#     src: oratab
+#     dest: /etc/oratab
+
+
+- name: copy files
   template:
-    src: oratab
-    dest: /etc/oratab
+    src: "{{ item.name }}"
+    dest: "{{ item.path }}"
+    owner: oracle
+    group: oinstall
+  loop:
+    - name: oratab
+      path: /etc/oratab
+    - name: init.sql
+      path: /home/oracle
+    - name: sql.sh
+      path: /home/oracle
+
+- name: init oracle database 
+  shell: 
+    cmd: su - oracle  -c "bash /home/oracle/sql.sh"
+    chdir: "/home/oracle"
