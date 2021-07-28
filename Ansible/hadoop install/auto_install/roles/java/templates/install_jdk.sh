@@ -6,7 +6,7 @@ if [ -L "/usr/java/default/jdk1.8.0_101" ];then
 	echo "installed"
 	exit 0
 fi
-wget ftp://ansible/pub/data/packages/jdk1.8.0_101.tar.gz  -P /opt/ 
+wget ftp://ftp/pub/packages/jdk1.8.0_101.tar.gz  -P /opt/ 
 tar -xf /opt/jdk1.8.0_101.tar.gz -C /opt
 chmod +x /opt/jdk1.8.0_101/bin/*
 chmod +x /opt/jdk1.8.0_101/jre/bin/*

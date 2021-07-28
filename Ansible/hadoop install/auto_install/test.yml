@@ -1,0 +1,5 @@
+- hosts: hbase-master2
+  remote_user: root
+  roles:
+    - base
+    # - oracle

@@ -1,7 +1,7 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-192.168.33.20 ansible
+192.168.33.20 ansible ftp
 192.168.33.21 hbase-master1 zookeeper01 kafka01
 192.168.33.22 hbase-master2 zookeeper02 kafka02
 192.168.33.23 hbase-slave01 zookeeper03 kafka03

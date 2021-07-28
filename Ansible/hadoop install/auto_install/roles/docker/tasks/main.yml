@@ -1,0 +1,11 @@
+---
+- name: install docker
+  yum:
+    name: docker
+
+- name: Make sure docker is running
+  systemd:
+    state: started
+    name: docker
+    enabled: yes
+

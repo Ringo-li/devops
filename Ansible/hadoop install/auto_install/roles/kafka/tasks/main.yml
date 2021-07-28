@@ -1,0 +1,21 @@
+---
+- name: download kafka.tar.gz
+  get_url:
+    url: "ftp://ftp/pub/packages/kafka.tar.gz"
+    dest: /opt
+    mode: 0644
+    force: yes
+    
+- name: Unarchive a file that is already on the remote machine
+  unarchive:
+    src: /opt/kafka.tar.gz
+    dest: /opt/
+    remote_src: yes
+
+- name: Execute the startupZookeeper.sh.
+  shell: /bin/bash /opt/kafka/startupZookeeper.sh 
+
+- name: Execute the startupKafka.sh.
+  shell: /bin/bash /opt/kafka/startupKafka.sh 
+
+

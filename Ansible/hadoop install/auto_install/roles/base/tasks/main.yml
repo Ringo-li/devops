@@ -5,6 +5,10 @@
     state: directory
     mode: '0755'
 
+- name: Move *.repo to bak
+  shell: 
+    cmd: mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/bak
+
 - name: copy hosts
   template:
     src: hosts.txt
