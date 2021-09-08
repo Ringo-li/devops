@@ -1,0 +1,17 @@
+[bigdata]
+hbase-master[1:2] 
+hbase-slave[01:04] 
+
+[devops]
+gitlab
+docker-registry
+ansible
+
+[kubenetes]
+k8s-master
+k8s-node[1:2]
+
+[all:vars]
+ansible_connection=ssh
+ansible_ssh_pass=vagrant
+ansible_ssh_extra_args='-o StrictHostKeyChecking=no'

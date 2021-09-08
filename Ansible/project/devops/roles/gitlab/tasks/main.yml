@@ -1,0 +1,31 @@
+---
+- name: copy gitlab.repo
+  template:
+    src: gitlab.repo
+    dest: /etc/yum.repos.d/
+
+- name: This command will reset yum cache.
+  shell:
+    cmd: yum clean all && yum makecache
+
+- name: Install package with multiple repos enabled
+  yum:
+    name: gitlab-ce
+    disablerepo: "ftp"
+
+- name: copy gitlab.rb
+  template:
+    src: gitlab.rb
+    dest: /etc/gitlab/
+    backup: yes
+
+- name: flash config about 5 minutes
+  shell: gitlab-ctl reconfigure
+
+- name: Get initial_root_password
+  shell: 
+    cmd: "cat /etc/gitlab/initial_root_password | grep Password: | awk '{print $2}' "
+  register: data 
+
+- debug: 
+    msg: "init root Password: {{ data.stdout }}" 

@@ -1,0 +1,36 @@
+---
+- name: zookeeper install
+  hosts: zookeeper
+  tasks:
+    - name: install zookeeper
+      yum:
+        name: zookeeper
+
+    - name: install zookeeper-server
+      yum:
+        name: zookeeper-server
+
+    - name: copy install_jdk.sh
+      template:
+        src: zoo.cfg
+        dest: /etc/zookeeper/conf/zoo.cfg
+        backup: yes
+
+    - name: copy zookeeper_myid_set.sh
+      template:
+        src: zookeeper_myid_set.sh
+        dest: /root/zookeeper_myid_set.sh
+
+    - name: Run zookeeper_myid_set.sh
+      shell: /bin/bash /root/zookeeper_myid_set.sh
+
+    - name: copy zookeeper.service
+      template:
+        src: zookeeper.service
+        dest: /usr/lib/systemd/system/zookeeper.service
+
+    - name: enable and start zookeeper
+      systemd:
+        name: zookeeper
+        state: started
+        enabled: yes

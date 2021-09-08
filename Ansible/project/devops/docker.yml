@@ -1,0 +1,6 @@
+- hosts: docker-registry
+  gather_facts: no
+  remote_user: root
+  roles:
+    - base
+    - docker-registry

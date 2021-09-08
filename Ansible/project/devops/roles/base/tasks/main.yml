@@ -1,0 +1,38 @@
+---
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/yum.repos.d/bak
+    state: directory
+    mode: '0755'
+
+- name: Move *.repo to bak
+  shell: 
+    cmd: mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/bak
+
+- name: copy hosts
+  template:
+    src: hosts.txt
+    dest: /etc/hosts
+    backup: yes
+
+- name: copy ftp.repo
+  template:
+    src: ftp.repo
+    dest: /etc/yum.repos.d/
+
+- name: This command will reset yum cache.
+  shell:
+    cmd: yum clean all && yum makecache
+
+- name: install vim
+  yum:
+    name: vim
+
+- name: copy hostsname_set.sh
+  template:
+    src: hostsname_set.sh
+    dest: /root/
+
+- name: This command will reset hostsname.
+  shell:
+    cmd: /bin/bash /root/hostsname_set.sh

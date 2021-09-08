@@ -1,0 +1,13 @@
+# - hosts: hbase-master1
+# - hosts: hbase-master2
+# - hosts: hbase-slave01
+- hosts: gitlab
+# - hosts: hbase-slave03
+# - hosts: hbase-slave04
+  gather_facts: no
+  remote_user: root
+  # vars:
+  #   oracle_path: "/data/oracle"
+  roles:
+    - base
+    - gitlab

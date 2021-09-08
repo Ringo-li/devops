@@ -1,0 +1,5 @@
+[gitlab]
+name=gitlab
+baseurl=ftp://ansible/pub/gitlab
+gpgcheck=0
+enabled=1
