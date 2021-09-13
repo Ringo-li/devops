@@ -7,7 +7,8 @@ Vagrant.configure("2") do |config|
     end
   vb.vm.host_name = "gitlab"
   vb.vm.network "private_network", ip: "192.168.33.40"
-  config.vm.network "forwarded_port", guest: 80, host: 80, guest_ip: "192.168.33.40", host_ip: "172.31.255.254"
+  # config.vm.network "forwarded_port", guest: 80, host: 80, guest_ip: "192.168.33.40", host_ip: "172.31.255.254"
+  vb.vm.network "public_network", bridge: "eno1", ip: "172.31.33.40", netmask: "255.240.0.0"
   vb.vm.box = "centos/72"
   config.vm.provision "shell", privileged: true, path: "./setup.sh"
   end

@@ -13,11 +13,6 @@
   yum:
     name: "{{ packages }}"
     disablerepo: "ftp"
-  vars:
-    packages:
-    - docker-ce 
-    - docker-ce-cli 
-    - containerd.io
 
 - name: enable and start docker
   systemd:
@@ -25,12 +20,43 @@
     state: started
     enabled: yes
 
-# - name: download docker images 
-#   get_url:
-#     url: "ftp://ftp/pub/docker-images"
-#     dest: "{{ oracle_path }}"
-#     force: yes
+- name: download docker images 
+  get_url:
+    url: "ftp://ftp/pub/docker-images/{{ item }}.tar"
+    dest: "{{ images_path }}"
+    force: yes
+  loop: "{{ images }}"
 
-- name: import docker image
+- name: upload docker images 
   shell:
-    cmd: docker load < registry.tar
+    cmd: "docker load < {{ images_path }}/{{ item }}.tar"
+  loop: "{{ images }}"
+
+- name: Create config directory 
+  file:
+    path: "{{ images_path }}/config"
+    state: directory
+    mode: '0755'
+
+- name: copy config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ images_path }}/config/{{ item }}"
+  loop: "{{ configs }}"
+
+- name: run dns container 
+  shell:
+    cmd: "docker run -d -p 53:53/tcp -p 53:53/udp --restart=always --cap-add=NET_ADMIN --name dns-server andyshinn/dnsmasq"
+
+- name: run registry container 
+  shell:
+    cmd: "docker run -d -v /opt/registry:/var/lib/registry -p 80:5000 --restart=always --name registry registry"
+
+- name: update dns container config
+  shell:
+    cmd: "docker cp {{ images_path }}/config/{{ item }} dns-server:/etc/"
+  loop: "{{ configs }}"
+
+- name: restart dns container 
+  shell:
+    cmd: "docker restart dns-server"

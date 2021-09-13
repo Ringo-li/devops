@@ -1,5 +1,5 @@
 [docker]
 name=docker
-baseurl=ftp://ansible/pub/docker
+baseurl=ftp://ftp/pub/docker
 gpgcheck=0
 enabled=1

@@ -1,8 +1,0 @@
----
-- name: copy install_jdk.sh
-  template:
-    src: install_jdk.sh
-    dest: /root/install_jdk.sh
-
-- name: Run a script install jdk
-  shell: /bin/bash /root/install_jdk.sh

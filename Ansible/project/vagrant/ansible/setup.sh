@@ -2,7 +2,8 @@
 #注意：parted每一个操作会立刻生效，数据无价，注意保护。
 
 #网络设置
-echo "" > /etc/resolv.conf
+# echo "" > /etc/resolv.conf
+# ip link set dev enp0s3 down
 
 #查看GPT格式磁盘的信息
 parted /dev/sda print

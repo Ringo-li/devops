@@ -27,8 +27,8 @@ function ansible_install(){
 
 function ftp_install(){
   #复制安装包
-  cd ${BASEDIR}/../sources
-  rpm -i media/vsftpd-3.0.2-10.el7.x86_64.rpm 
+  cd ${BASEDIR}/../resource
+  rpm -i packages/vsftpd-3.0.2-10.el7.x86_64.rpm 
   cp -r ./* /var/ftp/pub/
   systemctl start vsftpd
   # systemctl enable vsftpd
@@ -43,13 +43,16 @@ function package_install(){
 #   cat>>/etc/yum.repos.d/ftp.repo<<EOF
 # [ftp]
 # name=ftp
-# baseurl=ftp://ansible/pub/media/
+# baseurl=ftp://ansible/pub/packages/
 # gpgcheck=0
 # enabled=1
 # EOF
   yum clean all && yum makecache
   #开始安装软件包
-  yum -y install vim
+  yum -y install vim createrepo
+  rm -rf /etc/yum.repos.d/ftp.repo
+  mv /etc/yum.repos.d/bak/*.repo  /etc/yum.repos.d/
+  rm -rf /etc/yum.repos.d/bak/
 }
 
 function hosts_config(){

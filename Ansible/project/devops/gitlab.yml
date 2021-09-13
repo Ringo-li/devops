@@ -1,13 +1,11 @@
-# - hosts: hbase-master1
-# - hosts: hbase-master2
-# - hosts: hbase-slave01
 - hosts: gitlab
-# - hosts: hbase-slave03
-# - hosts: hbase-slave04
-  gather_facts: no
-  remote_user: root
+  vars_files:
+    - vars/docker-registry.yml
   # vars:
   #   oracle_path: "/data/oracle"
+  gather_facts: no
+  remote_user: root
+
   roles:
     - base
     - gitlab

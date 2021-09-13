@@ -1,4 +1,6 @@
 - hosts: docker-registry
+  vars_files:
+    - vars/docker-registry.yml
   gather_facts: no
   remote_user: root
   roles:

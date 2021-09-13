@@ -1,0 +1,2 @@
+{{ gitlab_ip }} gitlab.example.com
+{{ registry_ip }} registry.example.com

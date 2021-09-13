@@ -12,7 +12,7 @@ parted -s /dev/sda  "mkpart primary   10.5GB   -1"
 parted /dev/sda print
 # 用mkfs.ext4将/dev/sda1格式化为ext4文件系统格式
 mkfs.ext4 /dev/sda3
-mkdir -p /var/ftp/pub/
+mkdir -p /data
 #将磁盘分区加入到/etc/fstab文件
-echo "/dev/sda3 /var/ftp/pub/   ext4    defaults        0 0" >> /etc/fstab
+echo "/dev/sda3 /data   ext4    defaults        0 0" >> /etc/fstab
 mount -a

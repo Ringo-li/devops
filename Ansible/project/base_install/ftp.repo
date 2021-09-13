@@ -1,5 +1,11 @@
 [ftp]
 name=ftp
-baseurl=ftp://ftp/pub/media/
+baseurl=ftp://ftp/pub/packages/
+gpgcheck=0
+enabled=1
+
+[createrepo]
+name=createrepo
+baseurl=ftp://ftp/pub/createrepo
 gpgcheck=0
 enabled=1
