@@ -1,0 +1,6 @@
+[ftp]
+name=ftp
+baseurl=ftp://ftp/pub/packages/
+gpgcheck=0
+enabled=1
+

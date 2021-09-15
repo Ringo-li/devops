@@ -1,6 +1,6 @@
 - hosts: gitlab
   vars_files:
-    - vars/docker-registry.yml
+    - - vars/vars.yml
   # vars:
   #   oracle_path: "/data/oracle"
   gather_facts: no

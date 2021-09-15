@@ -1,0 +1,9 @@
+- name: "kubernetes install"
+  hosts: k8s-node2
+  vars_files:
+    - vars/vars.yml
+  gather_facts: no
+  roles:
+    - role: base
+    - role: kubernetes
+

@@ -1,7 +1,7 @@
 #!/bin/bash
 #注意：parted每一个操作会立刻生效，数据无价，注意保护。
 
-
+exit 0
 #查看GPT格式磁盘的信息
 parted /dev/sda print
 

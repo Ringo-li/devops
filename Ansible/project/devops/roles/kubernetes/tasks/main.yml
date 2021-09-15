@@ -1,0 +1,12 @@
+---
+- import_tasks: init.yml
+
+- import_tasks: kernelup.yml
+
+- import_tasks: install.yml
+
+- import_tasks: master.yml
+  when: "inventory_hostname.startswith('k8s-master')"
+
+- import_tasks: node.yml
+  when: "inventory_hostname.startswith('k8s-node')"

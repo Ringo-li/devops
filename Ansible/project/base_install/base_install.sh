@@ -62,9 +62,9 @@ function hosts_config(){
 function main(){
   get_project
   ansible_install
-  ftp_install
-  package_install
-  hosts_config
+  #ftp_install
+  #package_install
+  #hosts_config
 }
 
 main

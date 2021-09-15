@@ -1,0 +1,31 @@
+---
+- name: "download docker images" 
+  get_url:
+    url: "ftp://ftp/pub/docker-images/{{ item }}.tar"
+    dest: "{{ images_path }}"
+    force: yes
+  loop: "{{ images }}"
+
+
+- name: "upload docker images" 
+  shell:
+    cmd: "docker load < {{ images_path }}/{{ item }}.tar"
+  loop: "{{ images }}"
+
+- name: "copy mater_init.sh"
+  template:
+    src: mater_init.sh
+    dest: /root/mater_init.sh
+
+
+# - name: "debug"
+#   debug:
+#     var=inventory_hostname
+
+- name: "init master"
+  shell: 
+    cmd: "bash /root/mater_init.sh &> /root/mater_init.log"
+    # cmd: "bash /root/mater_init.sh"
+  # register: info
+  # failed_when: "'troubleshoot' in info.stdout_lines"
+  
