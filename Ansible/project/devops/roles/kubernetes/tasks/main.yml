@@ -9,4 +9,6 @@
   when: "inventory_hostname.startswith('k8s-master')"
 
 - import_tasks: node.yml
-  when: "inventory_hostname.startswith('k8s-node')"
+  when: "{{ hostvars['k8s-master']['k8s_token'] }}.startswith('kubeadm')"
+  when: "inventory_hostname.startswith('k8s-node')" 
+  

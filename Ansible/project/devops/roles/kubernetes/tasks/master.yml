@@ -4,13 +4,13 @@
     url: "ftp://ftp/pub/docker-images/{{ item }}.tar"
     dest: "{{ images_path }}"
     force: yes
-  loop: "{{ images }}"
+  loop: "{{ master_images }}"
 
 
 - name: "upload docker images" 
   shell:
     cmd: "docker load < {{ images_path }}/{{ item }}.tar"
-  loop: "{{ images }}"
+  loop: "{{ master_images }}"
 
 - name: "copy mater_init.sh"
   template:
@@ -24,8 +24,34 @@
 
 - name: "init master"
   shell: 
-    cmd: "bash /root/mater_init.sh &> /root/mater_init.log"
-    # cmd: "bash /root/mater_init.sh"
-  # register: info
-  # failed_when: "'troubleshoot' in info.stdout_lines"
-  
+    # cmd: "bash /root/mater_init.sh &> /root/mater_init.log"
+    cmd: "bash /root/mater_init.sh | tee /root/mater_init.log"
+  register: info
+  failed_when: "'error' in info.stdout"
+
+
+- name: "Copy config and script" 
+  copy: 
+    src: "{{ item }}"
+    dest: "/root/{{ item }}"
+  loop:
+  - "kube-flannel.yml"
+  - "kube-env.sh"
+
+- name: "base set up kube env"
+  shell: 
+    cmd: "bash /root/kube-env.sh"
+
+- name: "install kube-flannel" 
+  shell:
+    cmd: "kubectl apply -f /root/kube-flannel.yml"
+
+- name: "kubeadm  token"
+  shell: 
+    cmd: "kubeadm token create --print-join-command"
+  register: k8s_token
+
+- name: "set up k8s_token as set_fact"
+  set_fact: k8s_token={{ k8s_token.stdout }}
+
+

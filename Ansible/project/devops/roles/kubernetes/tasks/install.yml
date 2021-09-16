@@ -3,17 +3,17 @@
   copy:
     src: kubernetes.repo
     dest: /etc/yum.repos.d/
-
+    
 - name: "copy docker.repo"
   copy:
     src: docker.repo
     dest: /etc/yum.repos.d/
-
+ 
 - name: "This command will reset yum cache"
   shell:
     cmd: yum clean all && yum makecache
-
-- name: "Install base application"
+ 
+- name: "Install kube* application"
   yum:
     name: "{{ item }}"
     state: installed
@@ -24,7 +24,7 @@
     - 'kubelet-{{ k8s_version }}'
     - 'kubeadm-{{ k8s_version }}'
     - 'docker-ce'
-
+ 
 - name: "enable and start services"
   systemd:
     name: "{{ item }}"

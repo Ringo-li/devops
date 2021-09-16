@@ -1,5 +1,5 @@
 - name: "kubernetes install"
-  hosts: k8s-node2
+  hosts: kubernetes
   vars_files:
     - vars/vars.yml
   gather_facts: no

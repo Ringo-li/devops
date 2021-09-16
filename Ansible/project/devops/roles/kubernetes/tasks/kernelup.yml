@@ -3,26 +3,30 @@
   copy:
     src: RPM-GPG-KEY-elrepo.org
     dest: /root/RPM-GPG-KEY-elrepo.org
-
+  tags:
+    - kernelup
+ 
 - name: "import Public key"
   shell: 
     cmd: "rpm --import /root/RPM-GPG-KEY-elrepo.org"
-
+  tags:
+    - kernelup
+ 
 - name: "install kernel"
   shell: 
     cmd: "rpm -Uvh ftp://ftp/pub/kernel/kernel-ml-5.14.3-1.el7.elrepo.x86_64.rpm"
-
+ 
 - name: "set default Startup item"
   shell: 
     cmd: "grub2-set-default 0 && grub2-mkconfig -o /etc/grub2.cfg"
-
+ 
 - name: "Restart server"
   shell: 
     cmd: init 6
   async: 1
   poll: 0
   ignore_errors: true
-
+ 
 - name: "Wait for server to restart"
   local_action:
     module: wait_for

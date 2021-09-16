@@ -1,1 +1,20 @@
 ---
+# - name: "node debug"
+#   debug:
+#     msg={{ hostvars['k8s-master']['k8s_token'] }}
+
+- name: "download node docker images" 
+  get_url:
+    url: "ftp://ftp/pub/docker-images/{{ item }}.tar"
+    dest: "{{ images_path }}"
+    force: yes
+  loop: "{{ node_images }}"
+
+- name: "upload node docker images" 
+  shell:
+    cmd: "docker load < {{ images_path }}/{{ item }}.tar"
+  loop: "{{ node_images }}"
+
+- name: "add node to k8s cluster"
+  shell: 
+    cmd: "echo '' | {{ hostvars['k8s-master']['k8s_token'] }}"

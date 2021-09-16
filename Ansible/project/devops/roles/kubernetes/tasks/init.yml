@@ -1,15 +1,13 @@
 ---
 - name: "Disable swap"
   shell: swapoff -a
-  tags: swap
 
 - name: "Remove swapfile from /etc/fstab"
   mount:
     name: "swap"
     fstype: sqap
     state: absent
-  tags: swap
-
+    
 - name: "Modify sysctl"
   sysctl:
     name: "{{ item.name }}"
@@ -32,4 +30,5 @@
     - {name: 'net.ipv4.tcp_synack_retries ',value: ' 2' }
     - {name: 'net.ipv4.tcp_fin_timeout',value: '30' }
     - {name: 'net.ipv4.ip_local_port_range',value: '20000 60999' }
-
+    - {name: 'net.bridge.bridge-nf-call-iptables',value: '1' }
+    - {name: 'net.bridge.bridge-nf-call-ip6tables',value: '1' }
