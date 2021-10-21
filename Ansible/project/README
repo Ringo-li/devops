@@ -1,1 +1,28 @@
-1.需要创建一个sources文件夹，将yum源和安装包都放到这个目录下，要有一个media的tar包yum源
+1.需要创建一个resource文件夹，将yum源和安装包都放到这个目录下
+createrepo/
+docker/
+docker-images/
+gitlab/
+kernel/
+kubernetes/
+media/
+nslookup/
+packages/
+tcpdump/
+
+2.获取安装包
+这是另一个问题了
+
+3.自动安装k8s
+cd /ansible/base_install/
+./base_install.sh devops
+cd  /ansible/devops/
+ansible-playbook -i hosts.new ansible.yml
+ansible-playbook -i hosts.new kubernetes.yml
+
+kubectl create serviceaccount dashboard-admin -n kube-system
+kubectl create clusterrolebinding dashboard-admin --clusterrole=cluster-admin --serviceaccount=kube-system:dashboard-admin
+kubectl describe secrets -n kube-system $(kubectl -n kube-system get secret | awk '/dashboard-admin/{print $1}')
+
+4.自动安装gitlab
+ansible-playbook -i hosts.new gitlab.yml
