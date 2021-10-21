@@ -16,3 +16,5 @@ mkdir -p /data
 #将磁盘分区加入到/etc/fstab文件
 echo "/dev/sda3 /data   ext4    defaults        0 0" >> /etc/fstab
 mount -a
+# nohup sleep 30 && ip link set dev enp0s3 down &
+#sed -i /ONBOOT/s/yes/no/ /etc/sysconfig/network-scripts/ifcfg-enp0s3

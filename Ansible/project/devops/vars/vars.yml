@@ -19,11 +19,15 @@ master_images:
 - coredns                     
 - pause
 - flannel
+- dashboard
+- metrics-scraper 
 
 node_images:
-- "flannel"
-- "kube-proxy"
-- "pause"
+- flannel
+- kube-proxy
+- pause
+- dashboard
+- metrics-scraper 
 
 gitlab_ip: "192.168.33.40"
 

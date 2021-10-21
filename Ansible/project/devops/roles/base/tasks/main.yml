@@ -50,6 +50,7 @@
     - 'vim'
     - 'bash-completion'
     - 'chrony'
+    - 'kmod'
 
 - name: "Set chrony"
   template:

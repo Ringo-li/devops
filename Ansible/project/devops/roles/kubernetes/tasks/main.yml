@@ -1,7 +1,7 @@
 ---
-- import_tasks: init.yml
-
 - import_tasks: kernelup.yml
+
+- import_tasks: init.yml
 
 - import_tasks: install.yml
 
@@ -12,3 +12,5 @@
   when: "{{ hostvars['k8s-master']['k8s_token'] }}.startswith('kubeadm')"
   when: "inventory_hostname.startswith('k8s-node')" 
   
+- import_tasks: dashboard.yml
+  when: "inventory_hostname.startswith('k8s-master')"

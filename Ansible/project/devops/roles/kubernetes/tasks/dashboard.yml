@@ -1,0 +1,10 @@
+---
+- name: "Copy config and script" 
+  copy: 
+    src: "kubernetes-dashboard.yml"
+    dest: "/root/kubernetes-dashboard.yml"
+
+- name: "install kubernetes-dashboard" 
+  shell:
+    cmd: "kubectl apply -f /root/kubernetes-dashboard.yml"
+    
