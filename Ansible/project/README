@@ -26,3 +26,25 @@ kubectl describe secrets -n kube-system $(kubectl -n kube-system get secret | aw
 
 4.自动安装gitlab
 ansible-playbook -i hosts.new gitlab.yml
+
+5.创建gitlab token
+kubectl apply -f gitlab-admin-service-account.yaml
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab | awk '{print $1}')
+https://www.cnblogs.com/sanduzxcvbnm/p/13844799.html
+https://www.cnblogs.com/zhongyuanzhao000/p/11379098.html
+https://blog.csdn.net/weixin_39926749/article/details/110801708
+
+#CA certificate， 需要k8s认证
+kubectl get secrets | awk  '/default-token/{print $1}'
+kubectl get secret default-token-XXX -o jsonpath="{['data']['ca.crt']}" | base64 --decode
+
+
+6.安装harbor
+curl ftp://ftp/pub/harbor/docker-compose -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose 
+curl ftp://ftp/pub/harbor/harbor-offline-installer-v2.2.2.tgz -o harbor-offline-installer-v2.2.2.tgz
+curl ftp://ftp/pub/harbor/run.sh -o run.sh
+bash run.sh
+tar -xf harbor-offline-installer-v2.2.2.tgz
+cd harbor/
+./install.sh

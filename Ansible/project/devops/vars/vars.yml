@@ -1,14 +1,27 @@
 ---
 images_path: "/home"
 
+script: 
+- hostsname_set.sh
+- parted.sh
+
+ftp_packages:
+- createrepo
+- docker
+- docker-images
+- gitlab
+- kernel
+- kubernetes
+- nslookup
+- packages
+- tcpdump
+- harbor
+- helm
+
 packages:
 - docker-ce 
 - docker-ce-cli 
 - containerd.io
-
-images:
-- registry
-- dnsmasq
 
 master_images:
 - kube-proxy                  
@@ -33,13 +46,15 @@ gitlab_ip: "192.168.33.40"
 
 registry_ip: "192.168.33.50"
 
+dns_ip: "192.168.33.50"
+
 ntp_ip: "192.168.33.20"
 
 k8s_master_ip: "192.168.33.60"
 
 local_images: "registry.example.com"
 
-configs:
+dns_configs:
 - resolv.dnsmasq
 - dnsmasq.conf
 - add_hosts

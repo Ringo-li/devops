@@ -25,6 +25,17 @@
     - 'kubeadm-{{ k8s_version }}'
     - 'docker-ce'
  
+- name: "Create a directory if it does not exist"
+  file:
+    path: /etc/docker/
+    state: directory
+    mode: '0755'
+    
+- name: copy daemon.json
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+
 - name: "enable and start services"
   systemd:
     name: "{{ item }}"

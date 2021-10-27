@@ -1,0 +1,63 @@
+---
+- name: "copy base packages"
+  copy:
+    src: "{{ item }}"
+    dest: "/root/{{ item }}"
+  loop:
+  - "chrony-2.1.1-3.el7.centos.x86_64.rpm"
+  - "vsftpd-3.0.2-10.el7.x86_64.rpm"
+
+- name: "Install base packages"
+  shell:
+    cmd: "rpm -ih /root/{{ item }}"
+  loop:
+  - "chrony-2.1.1-3.el7.centos.x86_64.rpm"
+  - "vsftpd-3.0.2-10.el7.x86_64.rpm"
+
+- name: "start and enable vsftpd"
+  systemd:
+    name: vsftpd
+    enabled: yes
+    state: started
+    
+- name: "Set chrony"
+  copy:
+    src: "chrony.conf"
+    dest: "/etc/chrony.conf"
+  notify:
+    - restart chrony
+
+- name: "copy resource"
+  copy:
+    src: "/ansible/resource/{{ item }}"
+    dest: "/var/ftp/pub/"
+  loop: "{{ ftp_packages }}"
+
+- name: "Create a directory if it does not exist"
+  file:
+    path: /etc/yum.repos.d/bak
+    state: directory
+    mode: '0755'
+
+- name: "Move *.repo to bak"
+  shell: 
+    cmd: mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/bak
+
+- name: "copy ftp.repo"
+  copy:
+    src: ansible_ftp.repo
+    dest: /etc/yum.repos.d/ftp.repo
+
+- name: "This command will reset yum cache"
+  shell:
+    cmd: yum clean all && yum makecache
+
+- name: "Install base application"
+  yum:
+    name: "{{ item }}"
+    state: installed
+  loop:
+    - 'vim'
+    - 'bash-completion'
+    - 'createrepo'
+

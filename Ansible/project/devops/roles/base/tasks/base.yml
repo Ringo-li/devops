@@ -1,0 +1,53 @@
+- name: "Disable selinux"
+  selinux:
+    state: disabled
+
+- name: "Stop firewalld"
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped
+
+- name: "copy hosts"
+  copy:
+    src: hosts.txt
+    dest: /etc/hosts
+    backup: yes
+
+- name: "copy script"
+  copy:
+    src: "{{ item}}"
+    dest: /root/
+  loop: "{{ script }}"
+
+
+- name: "This command will excute scripts"
+  shell:
+    cmd: "/bin/bash /root/{{ item }}"
+  loop: "{{ script }}"
+
+- name: "Set timezone"
+  timezone:
+    name: Asia/Shanghai
+
+- name: "Set up dns server"
+  shell:
+    cmd: echo "nameserver {{ registry_ip }}" > /etc/resolv.conf
+
+- name: "Set ssh"
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  loop:
+    - { regexp: "UseDNS", line: "UseDNS no" }
+    - { regexp: "ClientAliveInterval", line: "ClientAliveInterval 600" }
+    - { regexp: "ClientAliveCountMax", line: "ClientAliveCountMax 2" }
+    - { regexp: "AddressFamily", line: "AddressFamily inet" }
+    - { regexp: "PermitRootLogin", line: "PermitRootLogin yes" }
+    - { regexp: "PermitEmptyPasswords", line: "PermitEmptyPasswords no" }
+    - { regexp: "PasswordAuthentication", line: "PasswordAuthentication no" }
+  notify:
+    - restart sshd
+

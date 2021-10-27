@@ -1,8 +1,10 @@
+---
 - name: "ansible initialization"
   hosts: ansible
   vars_files:
     - vars/vars.yml
   gather_facts: no
   roles:
-    - role: ansible
+    # - role: ansible
+    - role: base
 

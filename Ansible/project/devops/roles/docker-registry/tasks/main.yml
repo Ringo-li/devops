@@ -1,6 +1,6 @@
 ---
 - name: copy docker.repo
-  template:
+  copy:
     src: docker.repo
     dest: /etc/yum.repos.d/
 
@@ -8,11 +8,21 @@
   shell:
     cmd: yum clean all && yum makecache
 
-
 - name: ensure a list of packages installed
   yum:
     name: "{{ packages }}"
     disablerepo: "ftp"
+
+- name: "Create /etc/docker if it does not exist"
+  file:
+    path: /etc/docker/
+    state: directory
+    mode: '0755'
+
+- name: copy daemon.json
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
 
 - name: enable and start docker
   systemd:
@@ -22,15 +32,13 @@
 
 - name: download docker images 
   get_url:
-    url: "ftp://ftp/pub/docker-images/{{ item }}.tar"
+    url: "ftp://ftp/pub/docker-images/dnsmasq.tar"
     dest: "{{ images_path }}"
     force: yes
-  loop: "{{ images }}"
 
 - name: upload docker images 
   shell:
-    cmd: "docker load < {{ images_path }}/{{ item }}.tar"
-  loop: "{{ images }}"
+    cmd: "docker load < {{ images_path }}/dnsmasq.tar"
 
 - name: Create config directory 
   file:
@@ -38,25 +46,50 @@
     state: directory
     mode: '0755'
 
-- name: copy config files
+- name: copy dns config files
   template:
     src: "{{ item }}"
     dest: "{{ images_path }}/config/{{ item }}"
-  loop: "{{ configs }}"
+  loop: "{{ dns_configs }}"
 
 - name: run dns container 
   shell:
     cmd: "docker run -d -p 53:53/tcp -p 53:53/udp --restart=always --cap-add=NET_ADMIN --name dns-server andyshinn/dnsmasq"
 
-- name: run registry container 
-  shell:
-    cmd: "docker run -d -v /opt/registry:/var/lib/registry -p 80:5000 --restart=always --name registry registry"
-
 - name: update dns container config
   shell:
     cmd: "docker cp {{ images_path }}/config/{{ item }} dns-server:/etc/"
-  loop: "{{ configs }}"
+  loop: "{{ dns_configs }}"
 
 - name: restart dns container 
   shell:
     cmd: "docker restart dns-server"
+
+- name: download docker-compose  
+  get_url:
+    url: "ftp://ftp/pub/harbor/docker-compose-Linux-x86_64"
+    dest: "/usr/local/bin/docker-compose"
+    mode: '0755'
+    force: yes
+
+- name: Unarchive harbor that needs to be downloaded 
+  unarchive:
+    src: "ftp://ftp/pub/harbor/harbor-offline-installer-v2.2.2.tgz"
+    dest: /root
+    remote_src: yes
+
+- name: copy harbor.yml
+  template:
+    src: "harbor.yml"
+    dest: "/root/harbor/harbor.yml"
+
+- name: install  harbor
+  shell:
+    cmd: "bash /root/harbor/install.sh"
+
+
+
+
+
+
+
