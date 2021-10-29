@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gitlab-runner-config
+  namespace: gitlab-runner
+data:
+  config.toml: |-
+    concurrent = 4
+    [[runners]]
+      name = "Kubernetes Demo Runner"
+      url = "http://192.168.33.60:30080/"
+      token = "Y-kyRynztrGgLDZTFgii"
+      executor = "kubernetes"
+      [runners.kubernetes]
+        namespace = "gitlab-runner"
+        poll_timeout = 600
+        cpu_request = "1"
+        service_cpu_request = "200m"
+        [[runners.kubernetes.volumes.host_path]]
+            name = "docker"
+            mount_path = "/var/run/docker.sock"
+            host_path = "/var/run/docker.sock"
+      [runners.cache]
+        Type = "s3"
+        ServerAddress = "http://192.168.33.50:9000/"
+        AccessKey = "access"
+        SecretKey = "secret123456"
+        BucketName = "runner"

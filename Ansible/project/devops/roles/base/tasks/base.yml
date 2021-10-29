@@ -10,16 +10,21 @@
 
 - name: "copy hosts"
   copy:
-    src: hosts.txt
-    dest: /etc/hosts
+    src: "hosts"
+    dest: "/etc/hosts"
+    backup: yes
+
+- name: "copy resolv.conf"
+  template:
+    src: "resolv.conf"
+    dest: "/etc/resolv.conf"
     backup: yes
 
 - name: "copy script"
   copy:
-    src: "{{ item}}"
+    src: "{{ item }}"
     dest: /root/
   loop: "{{ script }}"
-
 
 - name: "This command will excute scripts"
   shell:
@@ -29,10 +34,6 @@
 - name: "Set timezone"
   timezone:
     name: Asia/Shanghai
-
-- name: "Set up dns server"
-  shell:
-    cmd: echo "nameserver {{ registry_ip }}" > /etc/resolv.conf
 
 - name: "Set ssh"
   lineinfile:

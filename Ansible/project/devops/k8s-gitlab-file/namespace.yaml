@@ -1,0 +1,9 @@
+---
+kind: Namespace  
+apiVersion: v1 
+metadata:
+  name: kube-gitlab  
+  labels:
+    name: kube-gitlab-v1  
+
+# kubectl create -f my-namespace.yaml 

@@ -48,3 +48,86 @@ bash run.sh
 tar -xf harbor-offline-installer-v2.2.2.tgz
 cd harbor/
 ./install.sh
+
+7.安装helm k8s服务器上
+curl ftp://ftp/pub/helm/helm-v2.16.1-linux-amd64.tar.gz -o /root/helm-v2.16.1-linux-amd64.tar.gz
+cd /root
+tar -zxvf helm-v2.16.1-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/
+helm version
+curl ftp://ftp/pub/docker-images/tiller.tar -o tiller.tar
+ docker load < tiller.tar
+ kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+helm init --upgrade -i registry.example.com/library/tiller:v2.16.1 --stable-repo-url http://gitlab.example.com/charts --service-account tiller
+helm version
+# 出现client和server即为正常安装
+# 准备NFS
+vi /etc/yum.repos.d/nfs-utils.repo
+[nfs-utils]
+name=nfs-utils
+baseurl=ftp://ftp/pub/nfs-utils
+gpgcheck=0
+enabled=1
+
+yum clean all
+yum makecache
+yum -y install nfs-utils
+# 创建PV
+kubectl create -f pv-tomcat.yaml
+
+8.部署minio 在docker-registry
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+systemctl restart network && systemctl restart docker
+sysctl net.ipv4.ip_forward
+
+curl ftp://ftp/pub/docker-images/minio.tar -o minio.tar
+docker load < minio.tar
+# 在宿主机准备两个目录，分别存储minio的配置和文件，执行以下命令：
+mkdir -p /var/services/homes/minio/gitlab_runner \
+&& chmod -R 777 /var/services/homes/minio/gitlab_runner \
+&& mkdir -p /var/services/homes/minio/config \
+&& chmod -R 777 /var/services/homes/minio/config
+
+# 执行docker命令创建minio服务，指定服务端口是9000，并且指定了access key(最短三位)和secret key(最短八位)
+docker run -p 9000:9000 --name minio \
+-d --restart=always \
+-e "MINIO_ACCESS_KEY=access" \
+-e "MINIO_SECRET_KEY=secret123456" \
+-v /var/services/homes/minio/gitlab_runner:/gitlab_runner \
+-v /var/services/homes/minio/config:/root/.minio \
+registry.example.com/library/minio:RELEASE.2020-08-26T00-00-49Z server /gitlab_runner
+
+
+9.部署gitlab
+创建命名空间
+kubectl apply -f namespace.yaml
+下载导入镜像
+curl ftp://ftp/pub/docker-images/redis.tar -o /data/redis.tar
+curl ftp://ftp/pub/docker-images/postgresql.tar -o /data/postgresql.tar
+curl ftp://ftp/pub/docker-images/gitlab.tar -o /data/gitlab.tar
+docker load -i /data/redis.tar
+docker load -i /data/postgresql.tar
+docker load -i /data/gitlab.tar
+安装redis
+
+
+
+10.部署RitLab Runner
+kubectl create namespace gitlab-runner
+kubectl create secret generic s3access \
+--from-literal=accesskey="access" \
+--from-literal=secretkey="secret123456" -n gitlab-runner
+
+helm repo add gitlab http://gitlab.example.com
+helm fetch gitlab/gitlab-runner
+
+tar -zxvf gitlab-runner-0.18.0.tgz
+vim values.yaml
+gitlabUrl
+http://gitlab.example.com
+runnerRegistrationToken
+1RoXopyo4Zh8-Gz8_XPS
+
+helm install --name-template gitlab-runner -f values.yaml . --namespace gitlab-runner
+helm del --purge gitlab-runner

@@ -1,0 +1,5 @@
+[nfs-utils]
+name=nfs-utils
+baseurl=ftp://ftp/pub/nfs-utils
+gpgcheck=0
+enabled=1

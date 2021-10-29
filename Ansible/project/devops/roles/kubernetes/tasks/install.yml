@@ -1,13 +1,12 @@
 ---
-- name: "copy kubernetes.repo"
+- name: "copy repo"
   copy:
-    src: kubernetes.repo
+    src: "{{ item }}.repo"
     dest: /etc/yum.repos.d/
-    
-- name: "copy docker.repo"
-  copy:
-    src: docker.repo
-    dest: /etc/yum.repos.d/
+  loop:
+    - "kubernetes"
+    - "docker"
+    - "nfs-utils"
  
 - name: "This command will reset yum cache"
   shell:
@@ -18,12 +17,13 @@
     name: "{{ item }}"
     state: installed
     disablerepo: "*"
-    enablerepo: "kubernetes,docker"
+    enablerepo: "kubernetes,docker,nfs-utils"
   loop:
     - 'kubectl-{{ k8s_version }}'
     - 'kubelet-{{ k8s_version }}'
     - 'kubeadm-{{ k8s_version }}'
     - 'docker-ce'
+    - 'nfs-utils'
  
 - name: "Create a directory if it does not exist"
   file:
