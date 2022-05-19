@@ -1,0 +1,44 @@
+官方源：https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7.6-x86_64/
+
+
+
+b.客户端包安装：
+
+yum install postgresql96
+
+c.安装数据库服务：
+
+yum install postgresql96-server
+
+d.初始化数据库
+
+/usr/pgsql-9.6/bin/postgresql96-setup initdb
+
+e.设置开机启动数据库
+
+systemctl enable postgresql-9.6
+
+f.启动数据库
+
+systemctl start postgresql-9.6
+
+g.检查数据库状态（有绿色，无红色说明启动成功）
+
+service postgresql-9.6 status
+
+
+安装postgis
+yum -y install epel-release
+mkdir /root/postgis
+yum -y  install postgis2_96  --downloadonly --downloaddir=/root/postgis
+yum install -y postgis2_96 --downloaddir=/root/postgis
+
+su - postgres
+验证：
+启动postgresql服务，进入命令行操作界面，执行以下命令： 
+
+create extension postgis
+
+select * from pg_available_extensions where name like 'postgis%';
+
+插件正常的状态为至少三行。
