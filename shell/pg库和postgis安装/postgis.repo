@@ -1,6 +1,6 @@
 [postgis]
 name=postgis
-baseurl=file:///root/postgis2_96_install/postgis
+baseurl=file://changeme/postgis
 enabled=1
 gpgcheck=0
 
