@@ -1,0 +1,68 @@
+一、安装jdk1.8
+版本页面
+https://www.oracle.com/java/technologies/downloads/
+wget https://download.oracle.com/java/18/latest/jdk-18_linux-x64_bin.rpm
+rmp -ivh jdk-18_linux-x64_bin.rpm
+4.设置环境变量
+打开文件
+vim /etc/profile
+在末尾添加
+export JAVA_HOME=/usr/java/default
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+使环境变量生效
+source /etc/profile
+
+一、安装maven
+获取安装包
+wget https://mirrors.cnnic.cn/apache/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
+
+tar  -xf apache-maven-3.8.5-bin.tar.gz
+
+mv apache-maven-3.8.5-bin /usr/local
+二、环境变量
+echo 'export MAVEN_HOME=/usr/local/apache-maven-3.8.5' >> /etc/profile
+echo 'export PATH=${PATH}:${MAVEN_HOME}/bin' >> /etc/profile
+
+使生效：
+
+source /etc/profile
+
+查看版本：
+
+mvn -v
+
+三、配置国内镜像源
+vi /opt/maven/conf/settings.xml
+
+在mirror中加入国内镜像源：
+
+    <mirror>
+      <id>mirrorId</id>
+      <mirrorOf>repositoryId</mirrorOf>
+      <name>Human Readable Name for this Mirror.</name>
+      <url>http://my.repository.com/repo/path</url>
+    </mirror>
+     -->
+
+    <mirror>
+      <id>alimaven</id>
+      <mirrorOf>central</mirrorOf>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+    </mirror>
+
+    <mirror>
+      <id>repo1</id>
+      <mirrorOf>central</mirrorOf>
+      <name>Human Readable Name for this Mirror.</name>
+      <url>http://repo1.maven.org/maven2/</url>
+    </mirror>
+
+    <mirror>
+      <id>repo2</id>
+      <mirrorOf>central</mirrorOf>
+      <name>Human Readable Name for this Mirror.</name>
+      <url>http://repo2.maven.org/maven2/</url>
+    </mirror>
